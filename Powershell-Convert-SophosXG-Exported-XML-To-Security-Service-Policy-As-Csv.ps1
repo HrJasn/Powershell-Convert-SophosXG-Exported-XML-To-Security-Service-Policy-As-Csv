@@ -36,11 +36,14 @@ for($SecurityPolicyIndex=0;$SecurityPolicyIndex -lt $SecurityPolicys.Count;$Secu
         $MappedPort = $SecurityPolicys[$SecurityPolicyIndex].NonHTTPBasedPolicy.MappedPort
         $ProtectedZone = $SecurityPolicys[$SecurityPolicyIndex].NonHTTPBasedPolicy.ProtectedZone
         $ProtectedServer = $SecurityPolicys[$SecurityPolicyIndex].NonHTTPBasedPolicy.ProtectedServer
+        $HostIP = ''
         $ServiceName = $MatchedService.Name
         $DestinationPort = $MatchedService.ServiceDetails.ServiceDetail.DestinationPort
 
         $SourceNetworks = $SecurityPolicys[$SecurityPolicyIndex].SourceNetworks.Network
         $SourceIPHosts = @()
+
+                        $ProtectedServer
 
         forEach($SourceNetwork in $SourceNetworks){
             forEach($IPHostGroup in $IPHostGroups){
@@ -57,8 +60,7 @@ for($SecurityPolicyIndex=0;$SecurityPolicyIndex -lt $SecurityPolicys.Count;$Secu
             forEach($IPHost in $IPHosts){
                 switch ($IPHost.HostType){
                     'IP' {
-                        if($IPHost.Name -eq $ProtectedServer){$HostIP = $IPHost.IPAddress}
-                        if($SourceNetwork -eq $IPHost.Name){
+                        if($IPHost.Name -eq $SourceNetwork){
                             $SourceIPHosts += $IPHost.IPAddress
                         }
                     }
@@ -75,6 +77,14 @@ for($SecurityPolicyIndex=0;$SecurityPolicyIndex -lt $SecurityPolicys.Count;$Secu
                             $PublicIP = ($Interfaces | ?{$_.Name -eq $InterFaceName}).IPAddress
                         }
                     }
+                }
+            }
+        }
+
+        forEach($IPHost in $IPHosts){
+            if($IPHost.HostType -eq 'IP'){
+                if($IPHost.Name -eq $ProtectedServer){
+                    $HostIP = $IPHost.IPAddress
                 }
             }
         }
