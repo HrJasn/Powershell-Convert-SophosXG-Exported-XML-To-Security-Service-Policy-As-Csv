@@ -1,3 +1,10 @@
+
+# 👋 我已經搬家到 GitLab
+
+所有專案現已遷移至 👉 [https://gitlab.com/hrjasn](https://gitlab.com/hrjasn)
+
+此處的儲存庫不再維護。
+
 # Powershell-Convert-SophosXG-Exported-XML-To-Security-Service-Policy-As-Csv
 
 1. Export "API-*.tar" from sophos xg firewall.
